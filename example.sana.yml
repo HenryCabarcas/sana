@@ -1,0 +1,60 @@
+leg:
+  description: "Defines characteristics of the 'leg' field"
+  type: integer -> array
+  validation:
+    beforeTransform:
+      OR: # Logical OR
+        - "isInteger"
+        - matchesRegex: "\\d+"
+    afterTransform:
+      - "array of numbers"
+      - "sum > 35"
+      - "mean <= 50"
+      - "std < 5.0"
+  transform:
+    - "toInteger"
+    - "toString"
+    - "replace '.' with ''"
+    - "split at 5"
+    - "toInteger"
+  autoParse: true
+  default: 2
+
+Person:
+  description: This object defines a person
+  type: object
+  autoParse: true # if input is not an object, but can be parsed as an object, it will
+  validation:
+    beforeTransform: # this defines the conditions the data must match at time of input
+      - keys > 5
+      - OR: # Represents logical OR within the AND grouping
+          - "leg >= 2"
+          - exists: arm
+    afterTransform: # This defines the conditions the data must match after the transformation/validation (the final value)
+      - "isObject"
+  default: null # This defines the default value
+  fields:
+    leg:
+      extends: leg
+    arm:
+      type: boolean -> string
+      validation:
+        OR: # Logical OR
+          - "isTrue"
+          - "isFalse"
+      transform:
+        - "toString"
+        - "replace 'true' with 'I have legs'"
+        - "replace 'false' with 'I don\\'t have legs 😭'"
+      default: true
+      required: true
+    birthDate:
+      type: string|date -> date
+      autoParse: true
+      validation:
+        OR:
+          - "dateformat is UTC"
+          - "date > yesterday"
+      transform:
+        - toDate: YYYY-MM-DDThh:mm:ss.SSSSZ
+      required: false

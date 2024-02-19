@@ -1,0 +1,8 @@
+{
+    "yaml.schemas": {
+        "/opt/me/services/sana/schema.json": [
+            ".sana.yml",
+            "file:///opt/me/services/sana/example.sana.yml"
+        ]
+    }
+}
