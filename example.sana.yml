@@ -1,12 +1,17 @@
 leg:
   description: "Defines characteristics of the 'leg' field"
-  type: integer -> array
+  type: integer | number | string -> array
   validation:
     beforeTransform:
       OR: # Logical OR
-        - "isInteger"
+        - AND:
+            - "isNull"
+        - "isNumber"
         - matchesRegex: "\\d+"
+        - matches: false
     afterTransform:
+      - matchesRegex: "\\d+"
+      - matches: []
       - "array of numbers"
       - "sum > 35"
       - "mean <= 50"
@@ -22,7 +27,7 @@ leg:
 
 Person:
   description: This object defines a person
-  type: object
+  type: object|array
   autoParse: true # if input is not an object, but can be parsed as an object, it will
   validation:
     beforeTransform: # this defines the conditions the data must match at time of input
@@ -42,6 +47,7 @@ Person:
         OR: # Logical OR
           - "isTrue"
           - "isFalse"
+          - matches: false
       transform:
         - "toString"
         - "replace 'true' with 'I have legs'"

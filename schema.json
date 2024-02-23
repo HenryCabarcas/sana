@@ -1,174 +1,262 @@
 {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "JSON Schema for Sana, a validation and sanitization library",
     "description": "validation and sanitization library, written in Rust",
     "type": "object",
     "additionalProperties": false,
-    "$defs": {
-        "properties": {
-            "types": {
-                "type": "string",
-                "enum": [
-                    "number",
-                    "integer",
-                    "float",
-                    "long",
-                    "NaN",
-                    "hex",
-                    "boolean",
-                    "string",
-                    "char",
-                    "object",
-                    "array",
-                    "date",
-                    "null",
-                    "enum"
-                ]
-            },
-            "conditionals": {
+    "definitions": {
+        "types": {
+            "type": "string",
+            "enum": [
+                "number",
+                "integer",
+                "float",
+                "long",
+                "NaN",
+                "hex",
+                "boolean",
+                "string",
+                "char",
+                "object",
+                "array",
+                "date",
+                "null",
+                "enum"
+            ]
+        },
+        "conditionals": {
+            "matches": {
+                "required": [
+                    "matches"
+                ],
                 "properties": {
                     "matches": {
                         "anyOf": [
                             {
+                                "description": "This functions validate the data matches the following string value",
                                 "type": "string"
                             },
                             {
+                                "description": "This functions validate the data matches the following array",
                                 "type": "array"
                             },
                             {
+                                "description": "This functions validate the data is true or false as set next",
                                 "type": "boolean"
                             },
                             {
+                                "description": "This functions validate the data matches the following number value",
                                 "type": "number"
                             },
                             {
+                                "description": "This functions validate the data is null",
                                 "type": "null"
                             },
                             {
+                                "description": "This functions validate the data matches the following object value",
                                 "type": "object"
                             }
                         ]
-                    },
-                    "matchesRegex": {
-                        "type": "string"
-                    },
-                    "includes": {
-                        "type": "string"
-                    },
-                    "conditionals": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/$defs/properties/conditionals/properties/matches"
-                            },
-                            {
-                                "$ref": "#/$defs/properties/conditionals/properties/matchesRegex"
-                            },
-                            {
-                                "type": "string",
-                                "enum": [
-                                    "isNumber",
-                                    "isInteger",
-                                    "isFloat",
-                                    "isString",
-                                    "isBoolean",
-                                    "isTrue",
-                                    "isFalse",
-                                    "isNull",
-                                    "isNaN",
-                                    "isArray",
-                                    "isObject",
-                                    "isDate",
-                                    "isHEX",
-                                    "isChar",
-                                    "isEnum",
-                                    "isOdd"
-                                ]
-                            },
-                            {
-                                "pattern": "^(min|mean|max|std|sqrt|sum|len|items)\\s+(is|is\\s+not)\\s+(lower|greater)\\s+than\\s+\\d+(\\.|)\\d*$"
-                            },
-                            {
-                                "pattern": "^(min|mean|max|std|sqrt|sum|len|items)\\s+(is|is\\s+not)\\s+(lower|greater)\\s+or\\s+equal\\s+to\\s+\\d+(\\.|)\\d*$"
-                            },
-                            {
-                                "pattern": "^(min|mean|max|std|sqrt|len|items)\\s+(is|is\\s+not)\\s+equal\\s+to\\s+\\d+(\\.|)\\d*$"
-                            },
-                            {
-                                "pattern": "^(min|mean|max|std|sqrt|sum|len|items)\\s*(==|<=|>=|>|<)\\s*\\d+(\\.|)\\d*$"
-                            },
-                            {
-                                "pattern": "^array\\s+of\\s+(numbers|objects|strings|nulls|booleans|integers|floats|NaN|dates|chars|hex)$"
-                            }
-                        ]
-                    },
-                    "conditionalKeyword": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/$defs/properties/conditionals/properties/conditionalObject"
-                            },
-                            {
-                                "$ref": "#/$defs/properties/conditionals/properties/conditionalArray"
-                            }
-                        ]
-                    },
-                    "conditionalObject": {
-                        "type": "object",
-                        "properties": {
-                            "AND": {
-                                "$ref": "#/$defs/properties/conditionals/properties/conditionalKeyword"
-                            },
-                            "OR": {
-                                "$ref": "#/$defs/properties/conditionals/properties/conditionalKeyword"
-                            },
-                            "NOT": {
-                                "$ref": "#/$defs/properties/conditionals/properties/conditionalKeyword"
-                            },
-                            "matches": {
-                                "$ref": "#/$defs/properties/conditionals/properties/matches"
-                            },
-                            "matchesRegex": {
-                                "$ref": "#/$defs/properties/conditionals/properties/matchesRegex"
-                            }
-                        }
-                    },
-                    "conditionalArray": {
-                        "type": "array",
-                        "items": {
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "$ref": "#/$defs/properties/conditionals/properties/conditionalObject"
-                                },
-                                {
-                                    "$ref": "#/$defs/properties/conditionals/properties/matches"
-                                },
-                                {
-                                    "$ref": "#/$defs/properties/conditionals/properties/matchesRegex"
-                                },
-                                {
-                                    "$ref": "#/$defs/properties/conditionals/properties/conditionals"
-                                }
-                            ]
-                        }
                     }
-                },
-                "variableObject": {
+                }
+            },
+            "matchesRegex": {
+                "required": [
+                    "matchesRegex"
+                ],
+                "properties": {
+                    "matchesRegex": {
+                        "description": "Validates string matches regular expression",
+                        "type": "string"
+                    }
+                }
+            },
+            "includes": {
+                "type": "string"
+            },
+            "conditionals": {
+                "anyOf": [
+                    {
+                        "$ref": "#/definitions/conditionals/matches"
+                    },
+                    {
+                        "$ref": "#/definitions/conditionals/matchesRegex"
+                    },
+                    {
+                        "type": "string",
+                        "const": "isNumber",
+                        "description": "XDDDDd",
+                        "title": "isNumber"
+                    },
+                    {
+                        "type": "string",
+                        "const": "isInteger",
+                        "title": ""
+                    },
+                    {
+                        "type": "string",
+                        "const": "isFloat",
+                        "title": ""
+                    },
+                    {
+                        "type": "string",
+                        "const": "isString",
+                        "title": ""
+                    },
+                    {
+                        "type": "string",
+                        "const": "isBoolean",
+                        "title": ""
+                    },
+                    {
+                        "type": "string",
+                        "const": "isTrue",
+                        "title": ""
+                    },
+                    {
+                        "type": "string",
+                        "const": "isFalse",
+                        "title": ""
+                    },
+                    {
+                        "type": "string",
+                        "const": "isNull",
+                        "title": ""
+                    },
+                    {
+                        "type": "string",
+                        "const": "isNaN",
+                        "title": ""
+                    },
+                    {
+                        "type": "string",
+                        "const": "isArray",
+                        "title": ""
+                    },
+                    {
+                        "type": "string",
+                        "const": "isObject",
+                        "title": ""
+                    },
+                    {
+                        "type": "string",
+                        "const": "isDate",
+                        "title": ""
+                    },
+                    {
+                        "type": "string",
+                        "const": "isHEX",
+                        "title": ""
+                    },
+                    {
+                        "type": "string",
+                        "const": "isChar",
+                        "title": ""
+                    },
+                    {
+                        "type": "string",
+                        "const": "isEnum",
+                        "title": ""
+                    },
+                    {
+                        "type": "string",
+                        "const": "isOdd",
+                        "title": ""
+                    },
+                    {
+                        "pattern": "^\\s*(min|mean|max|std|sqrt|sum|len|items)\\s+(is|is\\s+not)\\s+(lower|greater)\\s+than\\s+\\d+(\\.|)\\d*$"
+                    },
+                    {
+                        "pattern": "^\\s*(min|mean|max|std|sqrt|sum|len|items)\\s+(is|is\\s+not)\\s+(lower|greater)\\s+or\\s+equal\\s+to\\s+\\d+(\\.|)\\d*$"
+                    },
+                    {
+                        "pattern": "^\\s*(min|mean|max|std|sqrt|len|items)\\s+(is|is\\s+not)\\s+equal\\s+to\\s+\\d+(\\.|)\\d*$"
+                    },
+                    {
+                        "pattern": "^\\s*(min|mean|max|std|sqrt|sum|len|items)\\s*(==|<=|>=|>|<)\\s*\\d+(\\.|)\\d*$"
+                    },
+                    {
+                        "pattern": "^array\\s+of\\s+(numbers|objects|strings|nulls|booleans|integers|floats|NaN|dates|chars|hex)\\s*$"
+                    }
+                ]
+            },
+            "conditionalKeyword": {
+                "anyOf": [
+                    {
+                        "$ref": "#/definitions/conditionals/conditionalObject"
+                    },
+                    {
+                        "$ref": "#/definitions/conditionals/conditionalArray"
+                    }
+                ]
+            },
+            "conditionalObject": {
+                "type": "object",
+                "properties": {
+                    "AND": {
+                        "description": "Logical AND, where all conditions whitin must be true to be valid",
+                        "$ref": "#/definitions/conditionals/conditionalKeyword"
+                    },
+                    "OR": {
+                        "description": "Logical OR, where at least one contidion whitin must be true to be valid",
+                        "$ref": "#/definitions/conditionals/conditionalKeyword"
+                    },
+                    "NOT": {
+                        "description": "Logical NOT, Negates the result of the conditions whitin",
+                        "$ref": "#/definitions/conditionals/conditionalKeyword"
+                    }
+                }
+            },
+            "conditionalArray": {
+                "type": "array",
+                "items": {
+                    "minProperties": 1,
                     "anyOf": [
                         {
-                            "type": "object"
+                            "$ref": "#/definitions/conditionals/conditionals"
                         },
                         {
-                            "type": "array"
+                            "type": "object",
+                            "properties": {
+                                "matches": {
+                                    "$ref": "#/definitions/conditionals/matches"
+                                },
+                                "matchesRegex": {
+                                    "$ref": "#/definitions/conditionals/matchesRegex"
+                                },
+                                "AND": {
+                                    "description": "Logical AND, where all conditions whitin must be true to be valid",
+                                    "$ref": "#/definitions/conditionals/conditionalKeyword"
+                                },
+                                "OR": {
+                                    "description": "Logical OR, where at least one contidion whitin must be true to be valid",
+                                    "$ref": "#/definitions/conditionals/conditionalKeyword"
+                                },
+                                "NOT": {
+                                    "description": "Logical NOT, Negates the result of the conditions whitin",
+                                    "$ref": "#/definitions/conditionals/conditionalKeyword"
+                                }
+                            }
                         }
                     ]
                 }
+            },
+            "variableObject": {
+                "anyOf": [
+                    {
+                        "type": "object"
+                    },
+                    {
+                        "type": "array"
+                    }
+                ]
             }
         }
     },
     "patternProperties": {
-        "^.*$": {
+        "^[_a-zA-Z][a-zA-Z0-9_-]*$": {
+            "propertyNames": true,
+            "title": "Type definition",
             "description": "This is the name of a property",
             "type": "object",
             "required": [
@@ -179,15 +267,28 @@
                     "description": "This field defines the type of the data to be estored and/or transformed to",
                     "anyOf": [
                         {
-                            "$ref": "#/$defs/properties/types"
+                            "$ref": "#/definitions/types"
+                        },
+                        {
+                            "description": "Multiple types defined as an input",
+                            "type": "string",
+                            "pattern": "^\\s*(number|integer|float|long|NaN|hex|boolean|string|char|object|array|date|null|enum)(\\s*\\|\\s*(number|integer|float|long|NaN|hex|boolean|string|char|object|array|date|null|enum))+\\s*$"
                         },
                         {
                             "type": "string",
-                            "pattern": "^(number|integer|float|long|NaN|hex|boolean|string|char|date|null)\\s*->\\s*(number|integer|float|long|hex|boolean|string|char|date|null|array)$"
+                            "pattern": "^\\s*(number|integer|float|long|NaN|hex|boolean|string|char|date|null)\\s*->\\s*(number|integer|float|long|hex|boolean|string|char|date|null|array)\\s*$"
                         },
                         {
                             "type": "string",
-                            "pattern": "^(array|object|null|enum)\\s*->\\s*(array|object|null|enum|string|boolean|integer)$"
+                            "pattern": "^\\s*(array|object|null|enum)\\s*->\\s*(array|object|null|enum|string|boolean|integer)\\s*$"
+                        },
+                        {
+                            "type": "string",
+                            "pattern": "^\\s*((number|integer|float|long|NaN|hex|boolean|string|char|date|null)(\\s*\\|\\s*(number|integer|float|long|NaN|hex|boolean|string|char|date|null))+)\\s*->\\s*(number|integer|float|long|hex|boolean|string|char|date|null|array)\\s*$"
+                        },
+                        {
+                            "type": "string",
+                            "pattern": "^\\s*((array|object|null|enum)(\\s*\\|\\s*(array|object|null|enum))+)\\s*->\\s*(array|object|null|enum|string|boolean|integer)\\s*$"
                         }
                     ]
                 },
@@ -199,31 +300,35 @@
                     "description": "Conditionals that data must met in order to be valid",
                     "anyOf": [
                         {
-                            "$ref": "#/$defs/properties/conditionals/properties/conditionalArray"
+                            "type": "array",
+                            "$ref": "#/definitions/conditionals/conditionalArray"
                         },
                         {
-                            "$ref": "#/$defs/properties/conditionals/properties/conditionalObject"
+                            "type": "object",
+                            "$ref": "#/definitions/conditionals/conditionalObject"
                         },
                         {
                             "type": "object",
                             "properties": {
                                 "beforeTransform": {
+                                    "description": "Conditionals to met before the data is transformed, in other words, what needs to meet to be valid at input.",
                                     "anyOf": [
                                         {
-                                            "$ref": "#/$defs/properties/conditionals/properties/conditionalArray"
+                                            "$ref": "#/definitions/conditionals/conditionalArray"
                                         },
                                         {
-                                            "$ref": "#/$defs/properties/conditionals/properties/conditionalObject"
+                                            "$ref": "#/definitions/conditionals/conditionalObject"
                                         }
                                     ]
                                 },
                                 "afterTransform": {
+                                    "description": "Conditionals to met after the data is transformed, in other words, what needs to meet to be valid at output.",
                                     "anyOf": [
                                         {
-                                            "$ref": "#/$defs/properties/conditionals/properties/conditionalArray"
+                                            "$ref": "#/definitions/conditionals/conditionalArray"
                                         },
                                         {
-                                            "$ref": "#/$defs/properties/conditionals/properties/conditionalObject"
+                                            "$ref": "#/definitions/conditionals/conditionalObject"
                                         }
                                     ]
                                 }

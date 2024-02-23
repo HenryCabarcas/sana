@@ -3,6 +3,11 @@
         "/opt/me/services/sana/schema.json": [
             ".sana.yml",
             "file:///opt/me/services/sana/example.sana.yml"
+        ],
+        "file:///c%3A/Users/Stefany_Villadiego/Desktop/henry/sana/schema.json": [
+            ".sana.yml",
+            "file:///opt/me/services/sana/example.sana.yml",
+            "file:///c%3A/Users/Stefany_Villadiego/Desktop/henry/sana/example.sana.yml"
         ]
     }
 }
